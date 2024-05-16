@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:1.19.0
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - wordpress1
+      - wordpress2
+      - wordpress3
+    networks:
+      - frontend
+
+  wordpress1:
+    image: wordpress:5.4.2-php7.2-apache
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      - mysql
+    networks:
+      - frontend
+      - backend
+
+  wordpress2:
+    image: wordpress:5.4.2-php7.2-apache
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      - mysql
+    networks:
+      - frontend
+      - backend
+
+  wordpress3:
+    image: wordpress:5.4.2-php7.2-apache
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      - mysql
+    networks:
+      - frontend
+      - backend
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - backend
+
+networks:
+  frontend:
+  backend:
+
+volumes:
+  mysql_data:
